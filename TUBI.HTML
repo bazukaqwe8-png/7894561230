@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Happy Place</title>
+    <style>
+        /* --- General Styles --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #ff6f61;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* --- Buttons --- */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        button {
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            background-color: #ff5242;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* --- Display Boxes --- */
+        .display-box {
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: #fff8f6;
+            border: 2px dashed #ffb3a7;
+        }
+
+        .compliment-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d84315;
+            animation: popIn 0.3s ease-out;
+        }
+
+        .animal-img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            animation: popIn 0.3s ease-out;
+        }
+
+        /* --- Breathing Circle --- */
+        .breathing-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            background-color: #4db6ac;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(77, 182, 172, 0.5);
+            animation: breathe 8s infinite ease-in-out;
+        }
+
+        .breath-instruction {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #00695c;
+        }
+
+        /* --- Animations --- */
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); background-color: #4db6ac; }
+            45%, 55% { transform: scale(1.6); background-color: #80cbc4; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hey, Smile! ✨</h1>
+        <p>You matter, and it is completely okay to have down days. Pick a tool below to boost your mood right now.</p>
+
+        <div class="btn-grid">
+            <button onclick="getCompliment()">💖 Kind Words</button>
+            <button onclick="getAnimal()">🐱 Cute Animal</button>
+            <button onclick="startBreathing()">😮‍💨 Breathe</button>
+            <button onclick="resetSpace()">🔄 Clear Screen</button>
+        </div>
+
+        <!-- This box updates dynamically -->
+        <div id="contentBox" class="display-box">
+            <p style="color: #999;">Your happy content will appear here...</p>
+        </div>
+
+        <!-- Hidden Breathing Tool -->
+        <div id="breathingSpace" class="breathing-container">
+            <div class="circle" id="breathCircle">Breathe</div>
+            <div class="breath-instruction" id="breathText">Get ready...</div>
+        </div>
+    </div>
+
+    <script>
+        // Lists of happy content
+        const compliments = [
+            "You are much tougher than you think you are! 💪",
+            "The world is a much better place with you in it. 🌍",
+            "You are doing the best you can, and that is more than enough. ❤️",
+            "You have a beautiful heart. Never forget that. ✨",
+            "Mistakes just mean you are trying. Be proud of yourself! 🌟",
+            "You deserve peace, happiness, and all the love in the world. 🌸"
+        ];
+
+        // Links to cute animal pictures
+        const animals = [
+            "https://unsplash.com", // Happy Dog
+            "https://unsplash.com", // Cute Cat
+            "https://unsplash.com", // Happy Otter
+            "https://unsplash.com", // Cat with glasses
+            "https://unsplash.com"  // Sweet Fox
+        ];
+
+        const contentBox = document.getElementById("contentBox");
+        const breathingSpace = document.getElementById("breathingSpace");
+        const breathText = document.getElementById("breathText");
+        let breathInterval;
+
+        // Function to show a nice phrase
+        function getCompliment() {
+            hideBreathing();
+            const randomIndex = Math.floor(Math.random() * compliments.length);
+            contentBox.innerHTML = `<p class="compliment-text">${compliments[randomIndex]}</p>`;
+        }
+
+        // Function to show a cute pet photo
+        function getAnimal() {
+            hideBreathing();
+            const randomIndex = Math.floor(Math.random() * animals.length);
+            contentBox.innerHTML = `<img src="${animals[randomIndex]}" class="animal-img" alt="Cute Animal">`;
+        }
+
+        // Function to start the deep breathing coach
+        function startBreathing() {
+            contentBox.style.display = "none";
+            breathingSpace.style.display = "flex";
+            
+            // Text switching syncs up with the CSS circle scale animation (8 seconds total loop)
+            clearInterval(breathInterval);
+            let state = 0;
+            
+            function runBreathingText() {
+                if (state === 0) {
+                    breathText.innerText = "Breathe IN deeply... 🌬️";
+                    state = 1;
+                } else {
+                    breathText.innerText = "Breathe OUT slowly... 🍃";
+                    state = 0;
+                }
+            }
+            
+            runBreathingText();
+            breathInterval = setInterval(runBreathingText, 4000); // Swap every 4 seconds
+        }
+
+        // Helper functions to clear the space
+        function hideBreathing() {
+            clearInterval(breathInterval);
+            breathingSpace.style.display = "none";
+            contentBox.style.display = "flex";
+        }
+
+        function resetSpace() {
+            hideBreathing();
+            contentBox.innerHTML = '<p style="color: #999;">Your happy content will appear here...</p>';
+        }
+    </script>
+</body>
+</html>

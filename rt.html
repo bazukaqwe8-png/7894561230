@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youth Rise - Ignite Your Future</title>
+    <style>
+        /* Modern, Energetic Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            color: #1e293b;
+        }
+
+        /* Hero Header Section */
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            letter-spacing: -0.03em;
+        }
+
+        header p {
+            margin: 0.75rem 0 0 0;
+            color: #e0f2fe;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Layout Grid */
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Designs */
+        .card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #0f172a;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Interactive Tracker Section */
+        .tracker-input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tracker-input-box input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .action-btn {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #4338ca;
+        }
+
+        .goal-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #06b6d4;
+        }
+
+        .goal-item.completed {
+            border-left-color: #10b981;
+            background-color: #f0fdf4;
+            text-decoration: line-through;
+            color: #64748b;
+        }
+
+        .check-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Skill Hub Grid */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .hub-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hub-item {
+            background-color: #f1f5f9;
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .hub-item:hover {
+            transform: translateY(-3px);
+            background-color: #e2e8f0;
+        }
+
+        .hub-item h3 {
+            margin: 0 0 0.5rem 0;
+            color: #4f46e5;
+        }
+
+        .hub-item p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        /* Sidebar Notice Items */
+        .notice-item {
+            border-bottom: 1px dashed #e2e8f0;
+            padding: 1rem 0;
+        }
+
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+
+        .notice-date {
+            font-size: 0.8rem;
+            color: #06b6d4;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .notice-title {
+            margin: 0.25rem 0 0 0;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Header -->
+    <header>
+        <h1>Youth Rise Network</h1>
+        <p>Your space to build skills, track your personal growth goals, and connect with local opportunities.</p>
+    </header>
+
+    <!-- Main Layout Container -->
+    <div class="container">
+        
+        <!-- Left Side Main Content -->
+        <main>
+            <!-- Module 1: Goal Tracker -->
+            <div class="card">
+                <h2>🎯 Daily Growth Tracker</h2>
+                <p>Set small targets for yourself today (e.g., "Read 5 pages," "Practice coding," "Exercise"). Keep pushing!</p>
+                
+                <div class="tracker-input-box">
+                    <input type="text" id="goalInput" placeholder="Write a new goal here...">
+                    <button class="action-btn" onclick="addGoal()">Add Goal</button>
+                </div>
+
+                <ul class="goal-list" id="goalList">
+                    <!-- Default Items -->
+                    <li class="goal-item">
+                        <span>Complete introduction web design tutorial</span>
+                        <button class="check-btn" onclick="toggleGoal(this)">✅</button>
+                    </li>
+                    <li class="goal-item">
+                        <span>Update CV/Resume draft</span>
+                        <button class="check-btn" onclick="toggleGoal(this)">✅</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Module 2: Skill-Building Center -->
+            <div class="card">
+                <h2>🚀 Free Learning Hubs</h2>
+                <p>Knowledge is your greatest power. Explore these curated resources to level up your craft:</p>
+                
+                <div class="hub-grid">
+                    <a href="https://freecodecamp.org" target="_blank" class="hub-item">
+                        <h3>💻 Technology</h3>
+                        <p>Learn programming, website development, and tech logic completely free.</p>
+                    </a>
+                    <a href="https://coursera.org" target="_blank" class="hub-item">
+                        <h3>💼 Business Skills</h3>
+                        <p>Discover project management, marketing basics, and interview skills.</p>
+                    </a>
+                    <a href="https://khanacademy.org" target="_blank" class="hub-item">
+                        <h3>🎓 General Science</h3>
+                        <p>Master advanced math, personal finance rules, and economics paths.</p>
+                    </a>
+                    <a href="https://duolingo.org" target="_blank" class="hub-item">
+                        <h3>🗣️ Languages</h3>
+                        <p>Break down boundaries by training yourself to speak new international languages.</p>
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Side Sidebar Notice Board -->
+        <aside>
+            <div class="card">
+                <h2>📢 Opportunities Board</h2>
+                
+                <div class="notice-item">
+                    <div class="notice-date">Applications Open</div>
+                    <p class="notice-title">Local Tech Mentorship Cohort 2026</p>
+                </div>
+
+                <div class="notice-item">
+                    <div class="notice-date">Next Tuesday</div>
+                    <p class="notice-title">Virtual Resume Building Workshop</p>
+                </div>
+
+                <div class="notice-item">
+                    <div class="notice-date">Community Grant</div>
+                    <p class="notice-title">Youth-Led Sustainability Funds Available</p>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Website Logic Script -->
+    <script>
+        // Add a fresh goal to the tracker
+        function addGoal() {
+            const input = document.getElementById('goalInput');
+            const goalText = input.value.trim();
+            
+            if (goalText === '') {
+                alert('Please type a goal first!');
+                return;
+            }
+
+            const list = document.getElementById('goalList');
+            
+            // Create list element structure
+            const li = document.createElement('li');
+            li.className = 'goal-item';
+            
+            const span = document.createElement('span');
+            span.innerText = goalText;
+            
+            const button = document.createElement('button');
+            button.className = 'check-btn';
+            button.innerText = '✅';
+            button.onclick = function() { toggleGoal(button); };
+
+            li.appendChild(span);
+            li.appendChild(button);
+            list.appendChild(li);
+
+            // Clear input box
+            input.value = '';
+        }
+
+        // Toggle standard completion visual looks
+        function toggleGoal(buttonElement) {
+            const parentItem = buttonElement.parentElement;
+            parentItem.classList.toggle('completed');
+        }
+    </script>
+</body>
+</html>

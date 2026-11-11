@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Peace Corner - Calm Your Mind</title>
+    <style>
+        /* Peaceful and Soft Colors */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #e0f2fe 0%, #f0fdf4 100%);
+            margin: 0;
+            padding: 0;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        header {
+            text-align: center;
+            padding: 3rem 1rem 1rem 1rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #0f172a;
+            font-weight: 400;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 600px;
+            width: 100%;
+            padding: 0 1.5rem 3rem 1.5rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Card Layout */
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.4rem;
+            color: #1e293b;
+        }
+
+        /* Breathing Circle Animation */
+        .breathing-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .circle-container {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .circle {
+            background-color: #93c5fd;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            opacity: 0.6;
+            transition: all 4s ease-in-out;
+        }
+
+        /* JavaScript handles adding this class to make the circle grow */
+        .circle.expand {
+            width: 180px;
+            height: 180px;
+            background-color: #86efac;
+            opacity: 0.8;
+        }
+
+        .breath-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-top: 1rem;
+            height: 30px;
+        }
+
+        /* Sound Buttons */
+        .sound-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        .sound-btn {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: 16px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sound-btn:hover {
+            background-color: #f8fafc;
+            transform: translateY(-2px);
+            border-color: #cbd5e1;
+        }
+
+        .sound-btn.playing {
+            background-color: #dbeafe;
+            border-color: #93c5fd;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        /* Action Button */
+        .action-btn {
+            background-color: #1e293b;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #0f172a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>The Peace Corner</h1>
+        <p>Take a deep breath and let go of your worries.</p>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- Section 1: Breathing Guide -->
+        <div class="card">
+            <h2>Guided Breathing</h2>
+            <p>Follow the moving circle to steady your breath.</p>
+            <div class="breathing-box">
+                <div class="circle-container">
+                    <div class="circle" id="breathCircle"></div>
+                </div>
+                <div class="breath-text" id="breathText">Press Start to Begin</div>
+            </div>
+            <button class="action-btn" id="startBtn" onclick="toggleBreathing()">Start Exercise</button>
+        </div>
+
+        <!-- Section 2: Calming Sound Machine -->
+        <div class="card">
+            <h2>Ambient Sounds</h2>
+            <p>Click a sound to create your own quiet space.</p>
+            <div class="sound-grid">
+                <!-- Sound buttons generate soothing audio frequencies using code -->
+                <button class="sound-btn" onclick="toggleSound('rain', this)">
+                    <span class="icon">🌧️</span>
+                    <span>Gentle Rain</span>
+                </button>
+                <button class="sound-btn" onclick="toggleSound('ocean', this)">
+                    <span class="icon">🌊</span>
+                    <span>Ocean Waves</span>
+                </button>
+                <button class="sound-btn" onclick="toggleSound('forest', this)">
+                    <span class="icon">🌲</span>
+                    <span>Windy Trees</span>
+                </button>
+                <button class="sound-btn" onclick="toggleSound('white', this)">
+                    <span class="icon">🍃</span>
+                    <span>Soft Breeze</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Website Logic Script -->
+    <script>
+        // --- Breathing Exercise Logic ---
+        let breathingInterval;
+        let isBreathing = false;
+        
+        function toggleBreathing() {
+            const circle = document.getElementById('breathCircle');
+            const text = document.getElementById('breathText');
+            const btn = document.getElementById('startBtn');
+            
+            if (isBreathing) {
+                // Stop breathing
+                clearInterval(breathingInterval);
+                circle.classList.remove('expand');
+                text.innerText = "Press Start to Begin";
+                btn.innerText = "Start Exercise";
+                isBreathing = false;
+            } else {
+                // Start breathing loop (4 seconds in, 4 seconds out)
+                isBreathing = true;
+                btn.innerText = "Stop Exercise";
+                
+                function runCycle() {
+                    text.innerText = "Breathe In...";
+                    circle.classList.add('expand');
+                    
+                    setTimeout(() => {
+                        if(!isBreathing) return;
+                        text.innerText = "Breathe Out...";
+                        circle.classList.remove('expand');
+                    }, 4000);
+                }
+                
+                runCycle();
+                breathingInterval = setInterval(runCycle, 8000);
+            }
+        }
+
+        // --- Synthetic Audio Logic (Creates real sounds using code!) ---
+        let audioCtx;
+        let activeSounds = {};
+
+        function toggleSound(type, element) {
+            // Start audio context on user click
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (activeSounds[type]) {
+                // If sound is playing, stop it
+                activeSounds[type].stop();
+                delete activeSounds[type];
+                element.classList.remove('playing');
+            } else {
+                // Create a soft synthetic white/pink noise for relaxation
+                let bufferSize = 2 * audioCtx.sampleRate,
+                    noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate),
+                    output = noiseBuffer.getChannelData(0);
+                
+                let b0=0, b1=0, b2=0, b3=0, b4=0, b5=0, b6=0;
+                for (let i = 0; i < bufferSize; i++) {
+                    let white = Math.random() * 2 - 1;
+                    // Filter white noise to make it deeper/softer like rain or wind
+                    b0 = 0.99886 * b0 + white * 0.0555179;
+                    b1 = 0.99332 * b1 + white * 0.0750759;
+                    b2 = 0.96900 * b2 + white * 0.1538520;
+                    b3 = 0.86650 * b3 + white * 0.3104856;
+                    b4 = 0.55000 * b4 + white * 0.5329522;
+                    b5 = -0.7616 * b5 - white * 0.0168980;
+                    output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                    output[i] *= 0.11; // Lower the volume
+                    b6 = white * 0.115926;
+                }
+
+                let whiteNoise = audioCtx.createBufferSource();
+                whiteNoise.buffer = noiseBuffer;
+                whiteNoise.loop = true;
+
+                // Lowpass filter to make it sound dark and cozy
+                let filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                
+                // Adjust filter pitch based on sound type
+                if (type === 'rain') filter.frequency.value = 1000;
+                if (type === 'ocean') filter.frequency.value = 400;
+                if (type === 'forest') filter.frequency.value = 600;
+                if (type === 'white') filter.frequency.value = 1200;
+
+                whiteNoise.connect(filter);    
+        

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cut Photo Gallery</title>
+    <style>
+        /* Base Colors and Style */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            color: #1e293b;
+        }
+
+        /* Top Header */
+        header {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            color: #ffffff;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            color: #c7d2fe;
+            font-size: 1.1rem;
+        }
+
+        /* Filter Controls */
+        .filter-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 2.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Dynamic Grid Layout */
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            padding-bottom: 5rem;
+        }
+
+        /* Image Display Cards */
+        .photo-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+
+        /* Magic Box: Automatically crops any photo to fit perfectly */
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* Default 1:1 Square Ratio */
+            background-color: #f1f5f9;
+            overflow: hidden;
+        }
+
+        /* Ratio Modifiers */
+        .ratio-wide .image-wrapper {
+            padding-top: 56.25%; /* 16:9 Cinematic Landscape */
+        }
+
+        .ratio-tall .image-wrapper {
+            padding-top: 125%; /* 4:5 Social Media Portrait */
+        }
+
+        .image-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* This centers and clips the picture cleanly */
+            object-position: center;
+        }
+
+        .photo-info {
+            padding: 1.25rem;
+        }
+
+        .photo-info h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .photo-tag {
+            display: inline-block;
+            background-color: #f1f5f9;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Creative Cut Gallery</h1>
+        <p>A pristine showcase for beautifully cropped visuals</p>
+    </header>
+
+    <!-- Navigation Filters -->
+    <div class="filter-nav">
+        <button class="filter-btn active" onclick="filterGallery('all', event)">View All</button>
+        <button class="filter-btn" onclick="filterGallery('square', event)">Square Cuts</button>
+        <button class="filter-btn" onclick="filterGallery('wide', event)">Wide Angle</button>
+        <button class="filter-btn" onclick="filterGallery('tall', event)">Portraits</button>
+    </div>
+
+    <!-- Gallery Grid Area -->
+    <div class="gallery-container">
+        <div class="gallery-grid" id="galleryGrid">
+            
+            <!-- Item 1: Square -->
+            <div class="photo-card" data-category="square">
+                <div class="image-wrapper">
+                    <img src="download (39).jpg" alt="Square Landscape">
+                </div>
+                <div class="photo-info">
+                    <h3>Mystic Forest</h3>
+                    <span class="photo-tag">Square</span>
+                </div>
+            </div>
+
+            <!-- Item 2: Wide Banner -->
+            <div class="photo-card ratio-wide" data-category="wide">
+                <div class="image-wrapper">
+                    <img src="download (37).jpg" alt="Wide Horizon">
+                </div>
+                <div class="photo-info">
+                    <h3>Coastal Ridge</h3>
+                    <span class="photo-tag">Wide</span>
+                </div>
+            </div>
+
+            <!-- Item 3: Portrait -->
+            <div class="photo-card ratio-tall" data-category="tall">
+                <div class="image-wrapper">
+                    <img src="download (34).jpg" alt="Tall Architecture">
+                </div>
+                <div class="photo-info">
+                    <h3>Urban Pillars</h3>
+                    <span class="photo-tag">Portrait</span>
+                </div>
+            </div>
+
+            <!-- Item 4: Square -->
+            <div class="photo-card" data-category="square">
+                <div class="image-wrapper">
+                    <img src="download (33).jpg" alt="Square Object">
+                </div>
+                <div class="photo-info">
+                    <h3>Minimalist Geometry</h3>
+                    <span class="photo-tag">Square</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Sorting Filter Engine Script -->
+    <script>
+        function filterGallery(category, event) {
+            // Manage Button Highlights
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Hide or Show Elements
+            const cards = document.querySelectorAll('.photo-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

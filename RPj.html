@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cut Photo Gallery</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Header Layout */
+        header {
+            background-color: #1a1a2e;
+            color: #ffffff;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            color: #9a9ab0;
+        }
+
+        /* Filter Navigation Buttons */
+        .filter-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 2rem 0;
+        }
+
+        .filter-btn {
+            background-color: #ffffff;
+            border: 2px solid #1a1a2e;
+            color: #1a1a2e;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: #1a1a2e;
+            color: #ffffff;
+        }
+
+        /* Responsive Gallery Grid */
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding-bottom: 3rem;
+        }
+
+        /* Individual Photo Cards */
+        .photo-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Container that forces cropped aspects */
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* Default 1:1 Square Box */
+            background-color: #e2e8f0;
+            overflow: hidden;
+        }
+
+        /* Specific Aspect Ratio Overrides */
+        .ratio-wide .image-wrapper {
+            padding-top: 56.25%; /* 16:9 Banner Box */
+        }
+
+        .ratio-tall .image-wrapper {
+            padding-top: 133.33%; /* 3:4 Portrait Box */
+        }
+
+        /* The Image itself fills the box completely */
+        .image-wrapper img { 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* This cuts/crops the photo cleanly to fit */
+            object-position: center;
+        }
+
+        .photo-info {
+            padding: 1rem;
+        }
+
+        .photo-info h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .photo-tag {
+            display: inline-block;
+            background-color: #e2e8f0;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Cut Photo Collection</h1>
+        <p>A beautifully styled showcase of cropped and styled photography</p>
+    </header>
+
+    <!-- Navigation Filters -->
+    <div class="filter-nav">
+        <button class="filter-btn active" onclick="filterGallery('all')">Show All</button>
+        <button class="filter-btn" onclick="filterGallery('square')">Squares</button>
+        <button class="filter-btn" onclick="filterGallery('wide')">Wide/Banners</button>
+        <button class="filter-btn" onclick="filterGallery('tall')">Portraits</button>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="gallery-container">
+        <div class="gallery-grid" id="galleryGrid">
+            
+            <!-- Photo 1: Square Crop -->
+            <div class="photo-card" data-category="square">
+                <div class="image-wrapper">
+                    <!-- Replace the placeholder URL with your own photo link -->
+                    <img src="download (42).jpg" alt="Square Cut cat">
+                </div>
+                <div class="photo-info">
+                    <h3>Forest Trails</h3>
+                    <span class="photo-tag">Square</span>
+                </div>
+            </div>
+
+            <!-- Photo 2: Wide Crop -->
+            <div class="photo-card ratio-wide" data-category="wide">
+                <div class="image-wrapper">
+                    <img src="download (41).jpg" alt="Wide Cut Image">
+                </div>
+                <div class="photo-info">
+                    <h3>Ocean Horizon</h3>
+                    <span class="photo-tag">Wide</span>
+                </div>
+            </div>
+
+            <!-- Photo 3: Tall Crop -->
+            <div class="photo-card ratio-tall" data-category="tall">
+                <div class="image-wrapper">
+                    <img src="download (36).jpg" alt="Tall Cut cat">
+                </div>
+                <div class="photo-info">
+                    <h3>Mountain Peak</h3>
+                    <span class="photo-tag">Portrait</span>
+                </div>
+            </div>
+
+            <!-- Photo 4: Another Square Crop -->
+            <div class="photo-card" data-category="square">
+                <div class="image-wrapper">
+                    <img src="download (35).jpg" alt="Square Cut Image">
+                </div>
+                <div class="photo-info">
+                    <h3>City Streets</h3>
+                    <span class="photo-tag">Square</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Interactive Filtering Script -->
+    <script>
+        function filterGallery(category) {
+            // Update active button look
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter the cards
+            const cards = document.querySelectorAll('.photo-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
